@@ -5,10 +5,7 @@ import com.wnliam.uqdate.info.FileInfo;
 import com.wnliam.uqdate.util.GetPathUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +26,12 @@ import java.util.Date;
 @RequestMapping("/file")
 public class UPandDOWNFileController {
     //存放文件的路径 ，这里直接放到controller文件夹下
-    private static final String folder = "";
+    private  String folder = "";
+
+    public UPandDOWNFileController() throws FileNotFoundException {
+        folder = GetPathUtil.getJarRootPath();
+    }
+
     /**
      * 文件上传
      * @param file
@@ -37,7 +39,7 @@ public class UPandDOWNFileController {
      * @throws IOException
      */
     @PostMapping
-    public FileInfo update(MultipartFile file) throws IOException {
+    public FileInfo update(@RequestParam(value="file",required=false)MultipartFile file) throws IOException {
         /**
          * 注意：file名字要和参入的name一致
          */
@@ -45,13 +47,14 @@ public class UPandDOWNFileController {
         System.out.println("file name=" + file.getName());
         System.out.println("origin file name=" + file.getOriginalFilename());
         System.out.println("file size=" + file.getSize());
+        System.out.println("file folder=" + folder);
 
         /**
          * 这里是写到本地
          * 还可以用file.getInputStrem()
          * 获取输入流，然后存到阿里oss。。或七牛。。
          */
-        File localFile = new File(folder, new Date().getTime() + ".txt");
+        File localFile = new File(folder, file.getOriginalFilename());
 
         //把传入的文件写到本地文件
         file.transferTo(localFile);
