@@ -29,7 +29,7 @@ public class UPandDOWNFileController {
     private  String folder = "";
 
     public UPandDOWNFileController() throws FileNotFoundException {
-        folder = GetPathUtil.getJarRootPath();
+        folder = GetPathUtil.getJarRootPath() + "/static";
     }
 
     /**
@@ -39,39 +39,47 @@ public class UPandDOWNFileController {
      * @throws IOException
      */
     @PostMapping
-    public FileInfo update(@RequestParam(value="file",required=false)MultipartFile file) throws IOException {
+    public void update(@RequestParam(value="file",required=false)MultipartFile file,@RequestParam(value = "openid")
+            String openID) throws IOException {
         /**
-         * 注意：file名字要和参入的name一致
+         * 注意：file名字要和传入的name一致
          */
-
+        System.out.println("openid:"+openID);
         System.out.println("file name=" + file.getName());
         System.out.println("origin file name=" + file.getOriginalFilename());
         System.out.println("file size=" + file.getSize());
         System.out.println("file folder=" + folder);
 
+        String filepath = folder + "/" + openID;
         /**
          * 这里是写到本地
          * 还可以用file.getInputStrem()
-         * 获取输入流，然后存到阿里oss。。或七牛。。
          */
-        File localFile = new File(folder, file.getOriginalFilename());
-
+        File localFile = new File(filepath, file.getOriginalFilename());
+        File fileParent = localFile.getParentFile();
+        //判断是否存在
+        if (!fileParent.exists()) {
+            //创建父目录
+            fileParent.mkdirs();
+        }
+        localFile.createNewFile();
         //把传入的文件写到本地文件
         file.transferTo(localFile);
 
-        return new FileInfo(localFile.getAbsolutePath()); //getAbsolutePath为绝对路径
+//        return new FileInfo(localFile.getAbsolutePath()); //getAbsolutePath为绝对路径
 
     }
 
     /**
      * 文件的下载
      */
-    @GetMapping("/{id}") //id为时间戳
-    public void download(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping()
+    public void download(@RequestParam("")String id, HttpServletRequest request, HttpServletResponse response) {
 
+        File dfile = new File(folder,"*.*");
         try (
                 //jdk7新特性，可以直接写到try()括号里面，java会自动关闭
-                InputStream inputStream = new FileInputStream(new File(folder, id + ".txt"));
+                InputStream inputStream = new FileInputStream(dfile);
                 OutputStream outputStream = response.getOutputStream()
         ) {
             //指明为下载

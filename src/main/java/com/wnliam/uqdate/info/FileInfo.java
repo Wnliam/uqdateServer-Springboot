@@ -1,24 +1,40 @@
 package com.wnliam.uqdate.info;
 
+import java.io.Serializable;
+
 /**
  * 文件信息
  */
-public class FileInfo {
+public class FileInfo implements Serializable {
+    private String name;
+    private String time;
+    private Double size;
 
-    private String path;
 
-    public FileInfo(String path) {
-        this.path = path;
+    public String getName() {
+        return name;
     }
 
-    public FileInfo() {
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPath() {
-        return path;
+    public String getTime() {
+        return time;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setTime(String time) {
+        this.time = time;
     }
+
+    public Double getSize() {
+        return size;
+    }
+
+    public void setSize(Double size) {
+        this.size = size;
+    }
+
+
+
 }

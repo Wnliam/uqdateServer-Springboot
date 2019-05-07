@@ -27,7 +27,7 @@ public class GetPathUtil {
      * @date        2019/1/16 14:31
      */
     public static String getJarRootPath() throws FileNotFoundException {
-        String path = ResourceUtils.getURL("classpath:").getPath();
+        String path = ResourceUtils.getURL("classpath:").getPath();//可能会在Linux中失效
         //=> file:/root/tmp/demo-springboot-0.0.1-SNAPSHOT.jar!/BOOT-INF/classes!/
         log.debug("ResourceUtils.getURL(\"classpath:\").getPath() -> "+path);
         //创建File时会自动处理前缀和jar包路径问题  => /root/tmp

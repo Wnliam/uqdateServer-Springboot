@@ -37,7 +37,8 @@ public class UserControllerTest {
     @Test
     public void whenUploadSuccess() throws Exception {
         String result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/file")  //就是post
-                .file(new MockMultipartFile("file", "text.txt", "multipart/form-data", "hello upload".getBytes("UTF-8"))))   //模拟文件上传
+                .file(new MockMultipartFile("file", "text.txt",
+                        "multipart/form-data", "hello upload".getBytes("UTF-8"))))   //模拟文件上传
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsString()
                 ;
