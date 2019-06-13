@@ -2,8 +2,6 @@ package com.wnliam.uqdate.controller;
 
 import com.wnliam.uqdate.info.FileInfo;
 import com.wnliam.uqdate.util.GetPathUtil;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

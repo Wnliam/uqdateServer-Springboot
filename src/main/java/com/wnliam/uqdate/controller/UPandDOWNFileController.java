@@ -73,10 +73,10 @@ public class UPandDOWNFileController {
     /**
      * 文件的下载
      */
-    @GetMapping()
-    public void download(@RequestParam("")String id, HttpServletRequest request, HttpServletResponse response) {
-
-        File dfile = new File(folder,"*.*");
+    @RequestMapping(value = "/download")
+    public void download(@RequestParam("filename")String fileName, @RequestParam("openid") String openID, HttpServletResponse response) {
+        String filepath = folder + "/" + openID;
+        File dfile = new File(filepath,fileName);
         try (
                 //jdk7新特性，可以直接写到try()括号里面，java会自动关闭
                 InputStream inputStream = new FileInputStream(dfile);
@@ -84,7 +84,6 @@ public class UPandDOWNFileController {
         ) {
             //指明为下载
             response.setContentType("application/x-download");
-            String fileName = "test.txt";
             response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);   // 设置文件名
 
 
